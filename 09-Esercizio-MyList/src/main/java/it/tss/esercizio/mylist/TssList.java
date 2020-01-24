@@ -25,6 +25,14 @@ public class TssList<T> implements List<T> {
 
     }
 
+    private void copyData(T[] src, Object[] dest) {
+        int idx = 0;
+        for (T el : src) {
+            dest[idx] = el;
+            idx++;
+        }
+    }
+
     public TssList(T[] list) {
         this.list = Arrays.copyOf(list, list.length);
     }
@@ -57,49 +65,73 @@ public class TssList<T> implements List<T> {
     // algoritmo
     @Override
     public Object[] toArray() {
-        Object[] result = new Object[list.length];
-        System.arraycopy(list, 0, result, 0, list.length);
+        T[] result = (T[]) new Object[list.length];
+        copyData(list, result);
         return result;
     }
 
     //algoritmo
     @Override
     public <T> T[] toArray(T[] p) {
-        System.arraycopy(list, 0, p, 0, list.length);
-        return p;
+        T[] result = (T[]) new Object[list.length];
+        copyData(list, result);
+        return result;
     }
 
     //algoritmo
     @Override
     public boolean add(T p) {
-        //T[] tmp = new T[list.length +1]; array generic creation 
-        list = Arrays.copyOf(list, list.length + 1);
-        list[list.length - 1] = p;
+        T[] result = (T[]) new Object[list.length + 1];
+        copyData(list, result);
+        result[result.length - 1] = p;
+        list = result;
         return true;
     }
 
     //algoritmo
     @Override
     public boolean remove(Object p) {
-        List<T> tmp = Arrays.asList(list);
-        boolean result = tmp.remove(p);
-        list = tmp.toArray(list);
-        return result;
+        boolean found = contains(p);
+        if (!found) {
+            return false;
+        }
+        T[] result = (T[]) new Object[list.length - 1];
+        int idx = 0;
+        boolean first = false;
+        for (T el : list) {
+            if (!el.equals(p) || first) {
+                first = true;
+                result[idx] = el;
+                idx++;
+            }
+        }
+        list = result;
+        return true;
     }
 
     //algoritmo
     @Override
-    public boolean containsAll(Collection<?> arg0) {
-        return Arrays.asList(list).containsAll(arg0);
+    public boolean containsAll(Collection<?> p) {
+        for (Object v : p) {
+            boolean found = contains(v);
+            if (!found) {
+                return false;
+            }
+        }
+        return true;
     }
 
     //algoritmo
     @Override
-    public boolean addAll(Collection<? extends T> arg0) {
-        List<T> tmp = Arrays.asList(list);
-        boolean result = tmp.addAll(arg0);
-        list = tmp.toArray(list);
-        return result;
+    public boolean addAll(Collection<? extends T> p) {
+        T[] result = (T[]) new Object[list.length + p.size()];
+        copyData(list, result);
+        int idx = list.length;
+        for (Object v : p) {
+            result[idx] = (T) v;
+            idx++;
+        }
+        return true;
     }
 
     //algoritmo
@@ -113,28 +145,29 @@ public class TssList<T> implements List<T> {
 
     //algoritmo
     @Override
-    public boolean removeAll(Collection<?> arg0) {
-        List<T> tmp = Arrays.asList(list);
-        boolean result = tmp.removeAll(arg0);
-        list = tmp.toArray(list);
-        return result;
+    public boolean removeAll(Collection<?> p) {
+       for(Object v : p){
+           remove(v);
+       }
+       return true;
     }
 
     //algoritmo
     @Override
-    public boolean retainAll(Collection<?> arg0) {
-        List<T> tmp = Arrays.asList(list);
-        boolean result = tmp.retainAll(arg0);
-        list = tmp.toArray(list);
-        return result;
+    public boolean retainAll(Collection<?> p) {
+        for(T v : list){
+            if(! p.contains(v)){
+                remove(v);
+            }
+        }
+        return true;
     }
 
     //algoritmo
     @Override
     public void clear() {
-        List<T> tmp = Arrays.asList(list);
-        tmp.clear();
-        list = tmp.toArray(list);
+        T[] result = (T[]) new Object[0];
+        list = result;
     }
 
     @Override
@@ -168,14 +201,28 @@ public class TssList<T> implements List<T> {
 
     //algoritmo
     @Override
-    public int indexOf(Object arg0) {
-        return Arrays.asList(list).indexOf(arg0);
+    public int indexOf(Object p) {
+        int result = -1;
+        for (int i = 0; i < list.length; i++) {
+            if(contains(p)){
+                result = i;
+                break;
+            }
+        }
+        return result;
     }
 
     //algoritmo
     @Override
-    public int lastIndexOf(Object arg0) {
-        return Arrays.asList(list).lastIndexOf(arg0);
+    public int lastIndexOf(Object p) {
+        int result = -1;
+        for (int i = list.length -1; i >= 0; i--) {
+            if(contains(p)){
+                result = i;
+                break;
+            }
+        }
+        return result;
     }
 
     @Override
