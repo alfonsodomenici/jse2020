@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.http.HttpClient;
 
 /**
  *
@@ -23,6 +22,7 @@ public class App {
             
             URL url = new URL("http://www.google.it");
             URLConnection cn = url.openConnection();
+            
             BufferedReader br = new BufferedReader(new InputStreamReader(cn.getInputStream()));
             br.lines().forEach(System.out::println);
             br.close();
