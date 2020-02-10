@@ -1,4 +1,4 @@
-package it.tss.javafx;
+package it.tss.demofx;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,8 +17,9 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("mainMenuBorder"), 640, 480);
+        scene = new Scene(loadFXML("main"), 640, 480);
         stage.setScene(scene);
+        stage.setResizable(true);
         stage.show();
     }
 
@@ -31,9 +32,6 @@ public class App extends Application {
         return fxmlLoader.load();
     }
 
-    public static FXMLLoader getFXMLLoader(String fxml) throws IOException {
-        return new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-    }
     public static void main(String[] args) {
         launch();
     }

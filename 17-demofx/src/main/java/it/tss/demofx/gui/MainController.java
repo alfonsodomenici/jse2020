@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package it.tss.javafx;
+package it.tss.demofx.gui;
 
+import it.tss.demofx.App;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
@@ -19,28 +19,36 @@ import javafx.scene.layout.BorderPane;
  *
  * @author tss
  */
-public class MainMenuBorderController implements Initializable {
+public class MainController implements Initializable {
 
-    
     @FXML
     BorderPane borderPane;
     
     /**
      * Initializes the controller class.
+     *
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       
-    }    
-    
-    public void onExit(){
+
+    }
+
+    public void onClose() {
         System.exit(0);
     }
-    
-    public void onNewSong() throws IOException{
-        
+
+    public void onNewSong() throws IOException {
         Parent view = App.loadFXML("newSong");
-        NewSongController c = new FXMLLoader(getClass().getResource("newSong.fxml")).getController();
         borderPane.setCenter(view);
+    }
+
+    public void onUpdate(){
+        
+    }
+    
+    public void onViewAll(){
+        
     }
 }
