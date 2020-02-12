@@ -25,25 +25,25 @@ public class Song implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
     @Column(name = "title")
     private String titolo;
     @Column(name = "artist")
     private String artista;
     private String album;
+    @Transient
+    private String descrizione;
 
     public Song() {
     }
 
-    public Song(String titolo, String artista, String album, String descrizione) {
+    public Song(String titolo, String artista, String album) {
         this.titolo = titolo;
         this.artista = artista;
         this.album = album;
-        this.descrizione = descrizione;
+        this.descrizione = titolo + " -> " + artista;
     }
-
-    @Transient
-    private String descrizione;
 
     public Long getId() {
         return id;
@@ -77,6 +77,11 @@ public class Song implements Serializable {
         this.album = album;
     }
 
+    public String getDescrizione() {
+        return descrizione;
+    }
+
+    
     @Override
     public int hashCode() {
         int hash = 7;

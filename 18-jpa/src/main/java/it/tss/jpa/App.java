@@ -5,9 +5,11 @@
  */
 package it.tss.jpa;
 
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 /**
  *
@@ -21,8 +23,26 @@ public class App {
         
         EntityManager em = emf.createEntityManager();
         
-        em.createQuery("select e from Song e order by e.titolo")
-                .getResultList().forEach(System.out::println);
+        List<Song> list = em.createQuery("select e from Song e order by e.artista", Song.class)
+                .getResultList();
+                
+        list.forEach(v -> System.out.println(v.getTitolo()));
+
+        em.getTransaction().begin();
+        
+            Song song1 = new Song("aa", "aa", "aa");
+            
+            em.persist(song1);
+
+            /*
+            errore in transaction
+            
+            Song song2 = new Song("qq", "qq", "qq");
+            song2.setId(7l);               
+            em.persist(song2);
+            
+            */
+        em.getTransaction().commit();
         
         
     }
