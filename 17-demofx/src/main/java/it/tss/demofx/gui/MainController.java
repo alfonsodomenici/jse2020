@@ -43,12 +43,10 @@ public class MainController implements Initializable {
         Parent view = App.loadFXML("newSong");
         borderPane.setCenter(view);
     }
-
-    public void onUpdate(){
-        
-    }
     
-    public void onViewAll(){
-        
+    public void onViewAll() throws IOException{
+        Parent view = App.loadFXML("listSong");
+        borderPane.setCenter(view);
     }
+
 }

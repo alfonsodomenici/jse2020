@@ -14,9 +14,11 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
+    private static Stage rootStage;
 
     @Override
     public void start(Stage stage) throws IOException {
+        this.rootStage = stage;
         scene = new Scene(loadFXML("main"), 640, 480);
         stage.setScene(scene);
         stage.setResizable(true);
@@ -36,4 +38,9 @@ public class App extends Application {
         launch();
     }
 
+    public static Stage getRootStage() {
+        return rootStage;
+    }
+
+    
 }

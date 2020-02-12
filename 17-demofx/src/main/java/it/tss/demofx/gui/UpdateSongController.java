@@ -7,6 +7,7 @@ package it.tss.demofx.gui;
 
 import it.tss.demofx.App;
 import it.tss.demofx.business.DbStore;
+import it.tss.demofx.business.Song;
 import it.tss.demofx.business.SongsStoreException;
 import java.io.File;
 import java.net.URL;
@@ -17,13 +18,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
  * @author tss
  */
-public class NewSongController implements Initializable {
+public class UpdateSongController implements Initializable {
 
     @FXML
     private TextField txtTitolo;
@@ -33,6 +35,8 @@ public class NewSongController implements Initializable {
     private TextField txtAlbum;
     @FXML
     private Label txtFilename;
+    private Song selected;
+    private Stage stage;
     private File file;
 
     /**
@@ -43,29 +47,34 @@ public class NewSongController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        System.out.println("initialize newSong controller...");
+        System.out.println("initialize updateSong controller...");
     }
 
     public void onSave() {
         try {
-            DbStore.saveNewSong(txtTitolo.getText(), txtArtista.getText(), txtAlbum.getText(), txtFilename.getText(),this.file);
-            clearFields();
+            DbStore.updateSong(selected.getId(), txtTitolo.getText(), txtArtista.getText(), txtAlbum.getText());
             Messages.showMessage("Song salvata correttamente", "", Alert.AlertType.INFORMATION);
+            stage.close();
         } catch (SongsStoreException ex) {
             Messages.showMessage(ex.getMessage(), "", Alert.AlertType.ERROR);
         }
     }
 
-    public void onChooseFile() {
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public void changeSelected(Song song) {
+        this.selected = song;
+        txtTitolo.setText(song.getTitolo());
+        txtArtista.setText(song.getArtista());
+        txtAlbum.setText(song.getAlbum());
+    }
+    
+        public void onChooseFile() {
         final FileChooser fileChooser = new FileChooser();
         this.file = fileChooser.showOpenDialog(App.getRootStage());
         txtFilename.setText(this.file.getName());
-    }
-
-    private void clearFields() {
-        txtTitolo.setText("");
-        txtArtista.setText("");
-        txtAlbum.setText("");
-        txtFilename.setText("");
+        
     }
 }

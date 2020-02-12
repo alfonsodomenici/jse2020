@@ -18,7 +18,6 @@
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#onViewAll" text="Elenca" />
               <MenuItem mnemonicParsing="false" onAction="#onNewSong" text="Nuova" />
-                  <MenuItem mnemonicParsing="false" onAction="#onUpdate" text="Modifica" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
