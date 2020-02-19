@@ -6,12 +6,16 @@
 package it.tss.jpa;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -29,19 +33,25 @@ public class Song implements Serializable {
     private Long id;
     @Column(name = "title")
     private String titolo;
-    @Column(name = "artist")
-    private String artista;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Artista artista;
     private String album;
+    @Column(name = "file_name")
+    private String fileName;
+    @ManyToMany(mappedBy = "songs")
+    private List<Playlist> playlists;
+
     @Transient
     private String descrizione;
 
     public Song() {
     }
 
-    public Song(String titolo, String artista, String album) {
+    public Song(String titolo, Artista artista, String album, String fileName) {
         this.titolo = titolo;
         this.artista = artista;
         this.album = album;
+        this.fileName = fileName;
         this.descrizione = titolo + " -> " + artista;
     }
 
@@ -61,11 +71,11 @@ public class Song implements Serializable {
         this.titolo = titolo;
     }
 
-    public String getArtista() {
+    public Artista getArtista() {
         return artista;
     }
 
-    public void setArtista(String artista) {
+    public void setArtista(Artista artista) {
         this.artista = artista;
     }
 
@@ -81,7 +91,22 @@ public class Song implements Serializable {
         return descrizione;
     }
 
-    
+    public List<Playlist> getPlaylists() {
+        return playlists;
+    }
+
+    public void setPlaylists(List<Playlist> playlists) {
+        this.playlists = playlists;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
